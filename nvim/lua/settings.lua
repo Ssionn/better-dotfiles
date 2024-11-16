@@ -73,5 +73,23 @@ keymap.set('i', ';;', '<Esc>A;<Esc>') -- Insert trailing semicolon
 keymap.set('i', ',,', '<Esc>A,<Esc>') -- Insert trailing comma
 keymap.set('n', '<leader>k', '<CMD>noh<CR>', { noremap = true, silent = true })
 
+-- Blade Parser
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
+parser_config.blade = {
+    install_info = {
+        url = "https://github.com/deanrumsby/tree-sitter-blade",
+        files = { "src/parser.c", "src/scanner.c" },
+        branch = "main",
+    },
+    filetype = "blade",
+}
+
+vim.filetype.add({
+    pattern = {
+        [".*%.blade%.php"] = "blade",
+    },
+})
+
 -- Colorscheme
-vim.cmd("colorscheme kanagawa-wave")
+vim.cmd("colorscheme kanagawa")

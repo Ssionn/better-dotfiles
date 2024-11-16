@@ -162,6 +162,7 @@ return {
         },
     },
 
+    -- Better command prompt
     {
         "folke/noice.nvim",
         event = "VeryLazy",
@@ -199,6 +200,7 @@ return {
         }
     },
 
+    -- Bufferline
     {
         'akinsho/bufferline.nvim',
         version = "*",
@@ -301,6 +303,26 @@ return {
                     bg = "#1F1F28",
                 },
             },
+        }
+    },
+
+    -- Treesitter for syntax
+    {
+        "nvim-treesitter/nvim-treesitter",
+        opts = {
+            highlight = { enable = true },
+            ensure_installed = {
+                'html',
+                'blade',
+                'css',
+                'php',
+                'typescript',
+                'javascript',
+                'markdown',
+                'yaml',
+                'json',
+                'lua',
+            }
         }
     }
 }
