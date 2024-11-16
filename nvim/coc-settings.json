@@ -1,0 +1,10 @@
+{
+  "snippets.ultisnips.pythonPrompt": false,
+  "[php]": {
+    "coc.preferences.formatOnSave": true
+  },
+  "[lua]": {
+      "coc.preferences.formatOnSave": true
+  },
+  "php-cs-fixer.activateTool": "php-cs-fixer"
+}
