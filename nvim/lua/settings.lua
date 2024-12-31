@@ -17,7 +17,6 @@ o.autoindent = true
 o.smartindent = true
 
 -- File settings
-o.undofile = true
 o.scrolloff = 4
 o.sidescrolloff = 4
 

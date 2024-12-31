@@ -4,3 +4,4 @@ vim.opt.termguicolors = true
 
 require('config.lazy')
 require('settings')
+require('session')
