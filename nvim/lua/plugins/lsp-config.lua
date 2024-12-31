@@ -15,7 +15,8 @@ return {
                     "stimulus_ls",
                     "eslint",
                     "html",
-                    "jsonls"
+                    "jsonls",
+                    "cssls"
                 }
             })
         end
@@ -28,9 +29,11 @@ return {
 
             lspconfig.lua_ls.setup({ capabilities = capabilities })
             lspconfig.intelephense.setup({ capabilities = capabilities })
+            lspconfig.twiggy_language_server.setup({ capabilities = capabilities })
             lspconfig.stimulus_ls.setup({ capabilities = capabilities })
             lspconfig.eslint.setup({ capabilities = capabilities })
             lspconfig.html.setup({ capabilities = capabilities })
+            lspconfig.cssls.setup({ capabilities = capabilities })
             lspconfig.jsonls.setup({ capabilities = capabilities })
 
             vim.keymap.set('n', 'df', vim.lsp.buf.hover, {})

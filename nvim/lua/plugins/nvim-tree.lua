@@ -10,14 +10,14 @@ return {
             auto_reload_on_write = true,
             view = {
                 adaptive_size = true,
-                side = "right",
+                side = "left",
             },
             git = {
                 enable = true,
             },
             filesystem_watchers = {
                 enable = true,
-                debounce_delay = 50,
+                debounce_delay = 20,
                 ignore_dirs = {
                     "node_modules",
                     "vendor"

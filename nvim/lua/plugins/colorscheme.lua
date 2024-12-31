@@ -1,8 +1,10 @@
 return {
     {
-        "pauchiner/pastelnight.nvim",
-        lazy = false,
-        priority = 1000,
-        opts = {},
+        "Vanluren/neovim-onehalf",
+        config = function()
+            require('one-half').setup({
+                variant = 'dark',
+            })
+        end,
     }
 }
