@@ -1,10 +1,11 @@
 return {
-    {
-        "Vanluren/neovim-onehalf",
-        config = function()
-            require('one-half').setup({
-                variant = 'dark',
-            })
-        end,
-    }
+	{
+		"uloco/bluloco.nvim",
+		lazy = false,
+		priority = 1000,
+		dependencies = { "rktjmp/lush.nvim" },
+		config = function()
+			style = "dark"
+		end,
+	},
 }

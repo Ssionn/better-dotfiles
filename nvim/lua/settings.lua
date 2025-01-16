@@ -20,14 +20,14 @@ o.smartindent = true
 o.scrolloff = 4
 o.sidescrolloff = 4
 
-keymap.set('n', '<leader>w', ':bd<CR>', { noremap = true, silent = true })
-keymap.set('v', '<', '<gv')
-keymap.set('v', '>', '>gv')
-keymap.set('v', 'y', 'myy`y')
-keymap.set('v', '<leader>c', '"+y', { noremap = true, silent = true, desc = "Copy selection to system clipboard" });
-keymap.set('n', ';;', '<Esc>A;<Esc>') -- Insert trailing semicolon
-keymap.set('n', ',,', '<Esc>A,<Esc>') -- Insert trailing comma
-keymap.set('n', '<leader>k', '<CMD>noh<CR>', { noremap = true, silent = true })
+keymap.set("n", "<leader>w", ":bd<CR>", { noremap = true, silent = true })
+keymap.set("v", "<", "<gv")
+keymap.set("v", ">", ">gv")
+keymap.set("v", "y", "myy`y")
+keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true, desc = "Copy selection to system clipboard" })
+keymap.set("n", ";;", "<Esc>A;<Esc>") -- Insert trailing semicolon
+keymap.set("n", ",,", "<Esc>A,<Esc>") -- Insert trailing comma
+keymap.set("n", "<leader>k", "<CMD>noh<CR>", { noremap = true, silent = true })
 
 -- Cursorposition
 vim.cmd([[
@@ -35,4 +35,4 @@ vim.cmd([[
 ]])
 
 -- Colorscheme
-vim.cmd("colorscheme one-half-dark")
+vim.cmd("colorscheme bluloco")
