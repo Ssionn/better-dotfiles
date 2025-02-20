@@ -28,11 +28,23 @@ keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true, desc = "Cop
 keymap.set("n", ";;", "<Esc>A;<Esc>") -- Insert trailing semicolon
 keymap.set("n", ",,", "<Esc>A,<Esc>") -- Insert trailing comma
 keymap.set("n", "<leader>k", "<CMD>noh<CR>", { noremap = true, silent = true })
+keymap.set("n", "<D-s>", ":w<CR>", { noremap = true, silent = true }) -- [Command + s] to save
+keymap.set("v", "<D-c>", '"+y', { noremap = true, silent = true }) -- [Command + c] to copy
 
 -- Cursorposition
+vim.opt.updatetime = 300
 vim.cmd([[
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
 ]])
 
 -- Colorscheme
-vim.cmd("colorscheme bluloco")
+vim.cmd("colorscheme gruber-darker")
+
+-- Filetype Indentation Settings
+vim.cmd([[
+  autocmd FileType javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType typescriptreact setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType typescript.tsx setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+]])

@@ -1,11 +1,14 @@
 return {
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	opts = {},
+	-- },
 	{
-		"uloco/bluloco.nvim",
-		lazy = false,
-		priority = 1000,
-		dependencies = { "rktjmp/lush.nvim" },
-		config = function()
-			style = "dark"
-		end,
+		"blazkowolf/gruber-darker.nvim",
+		opts = {
+			bold = false,
+		},
 	},
 }
