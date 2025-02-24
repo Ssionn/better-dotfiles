@@ -3,7 +3,7 @@
 echo "Setting up Neovim configuration..."
 
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
-DOTFILES_DIR="$HOME/Documents/neo-config/nvim"
+DOTFILES_DIR="$HOME/Documents/better-dotfiles/nvim"
 
 if ! command -v node >/dev/null 2>&1; then
     echo "Node.js is required but not installed. Installing Node.js..."

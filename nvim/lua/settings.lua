@@ -1,6 +1,7 @@
 local vim = vim
 local o = vim.opt
 local keymap = vim.keymap
+local opts = { noremap = true, silent = true, }
 
 -- Line settings
 o.number = true
@@ -20,25 +21,32 @@ o.smartindent = true
 o.scrolloff = 4
 o.sidescrolloff = 4
 
-keymap.set("n", "<leader>w", ":bd<CR>", { noremap = true, silent = true })
-keymap.set("v", "<", "<gv")
-keymap.set("v", ">", ">gv")
-keymap.set("v", "y", "myy`y")
-keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true, desc = "Copy selection to system clipboard" })
-keymap.set("n", ";;", "<Esc>A;<Esc>") -- Insert trailing semicolon
-keymap.set("n", ",,", "<Esc>A,<Esc>") -- Insert trailing comma
-keymap.set("n", "<leader>k", "<CMD>noh<CR>", { noremap = true, silent = true })
-keymap.set("n", "<D-s>", ":w<CR>", { noremap = true, silent = true }) -- [Command + s] to save
-keymap.set("v", "<D-c>", '"+y', { noremap = true, silent = true }) -- [Command + c] to copy
+keymap.set("n", "<leader>w", ":bd<CR>", opts)
+keymap.set("v", "<", "<gv")              -- Add indentation to the left
+keymap.set("v", ">", ">gv")              -- Add indentation to the right
+keymap.set("v", "y", "myy`y")            -- Copy to nvim clipboard (not system)
+keymap.set("v", "<leader>c", '"+y', opts)
+keymap.set("n", ";;", "<Esc>A;<Esc>")    -- Insert trailing semicolon
+keymap.set("n", ",,", "<Esc>A,<Esc>")    -- Insert trailing comma
+keymap.set("n", "<leader>k", "<CMD>noh<CR>", opts)
+keymap.set("n", "<D-s>", ":w<CR>", opts) -- [Command + s] to save
+keymap.set("v", "<D-c>", '"+y', opts)    -- [Command + c] to copy
+
+keymap.set('n', '<leader>vs', ":vsplit<Return>", opts)
+keymap.set('n', '[', "<C-w>h", opts)
+keymap.set('n', ']', "<C-w>l", opts)
+keymap.set('n', '<C-[>', "<C-w>l<C-w>o", opts)
+keymap.set('n', '<C-]>', "<C-w>h<C-w>o", opts)
 
 -- Cursorposition
-vim.opt.updatetime = 300
+vim.o.updatetime = 300
 vim.cmd([[
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
 ]])
 
 -- Colorscheme
-vim.cmd("colorscheme gruber-darker")
+vim.o.background = "dark"
+vim.cmd("colorscheme oxocarbon")
 
 -- Filetype Indentation Settings
 vim.cmd([[
