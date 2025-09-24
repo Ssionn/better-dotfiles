@@ -1,42 +1,76 @@
+local parsers = {
+	"blade",
+	"php",
+	"php_only",
+	"regex",
+	"sql",
+	"lua",
+	"html",
+	"css",
+	"json",
+}
+
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		build = ":TSUpdate",
-		config = function()
-			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			parser_config.blade = {
-				install_info = {
-					url = "https://github.com/deanrumsby/tree-sitter-blade",
-					files = { "src/parser.c", "src/scanner.c" },
-					branch = "main",
-				},
-				filetype = "blade",
-			}
+		opts = {},
+		config = function(_, opts)
+			local nts = require("nvim-treesitter")
 
-			vim.filetype.add({
-				pattern = {
-					[".*%.blade%.php"] = "blade",
-				},
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = parsers,
+				callback = function()
+					vim.treesitter.start()
+					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
 			})
 
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = {
-					"php",
-					"phpdoc",
-					"typescript",
-					"javascript",
-					"html",
-					"json",
-					"lua",
-					"blade",
+			nts.setup(opts)
+			nts.install(parsers)
+		end,
+	},
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+	},
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	opts = {},
+	-- 	config = function()
+	-- 		vim.cmd([[colorscheme tokyonight-moon]])
+	-- 	end,
+	-- },
+	{
+		"blazkowolf/gruber-darker.nvim",
+		opts = {
+			bold = false,
+			italic = {
+				strings = false,
+			},
+		},
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup({
+				opts = {
+					enable_close = false,
+					enable_rename = false,
+					enable_close_on_slash = false,
 				},
-				sync_install = false,
-				auto_install = true,
-				highlight = {
-					enable = true,
-					additional_vim_regex_highlighting = false,
+
+				per_filetype = {
+					["blade"] = {
+						enable_close = true,
+						enable_rename = true,
+					},
 				},
-				indent = { enable = true },
 			})
 		end,
 	},

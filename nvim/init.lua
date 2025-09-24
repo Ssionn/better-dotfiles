@@ -1,6 +1,5 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
+require("options")
+require("config.lazy")
+require("config.keymaps")
 
-require('config.lazy')
-require('settings')
+vim.cmd.colorscheme("gruber-darker")

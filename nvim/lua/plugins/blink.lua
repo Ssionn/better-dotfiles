@@ -1,100 +1,145 @@
+local vim = vim
+
 return {
-    {
-        "saghen/blink.cmp",
-        dependencies = "rafamadriz/friendly-snippets",
+	{
+		"saghen/blink.cmp",
+		dependencies = { "rafamadriz/friendly-snippets" },
 
-        version = "*",
+		version = "1.*",
 
-        opts = {
-            keymap = {
-                preset = "none",
+		laravel = {
+			name = "laravel",
+			module = "blink.compat.source",
+			score_offset = 95, -- show at a higher priority than lsp
+		},
 
-                ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-                ['<C-e>'] = { 'hide', 'fallback' },
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			keymap = { preset = "super-tab" },
 
-                ['<Tab>'] = {
-                    function(cmp)
-                        if cmp.snippet_active() then
-                            return cmp.accept()
-                        else
-                            return cmp.select_and_accept()
-                        end
-                    end,
-                    'snippet_forward',
-                    'fallback'
-                },
-                ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+			appearance = {
+				use_nvim_cmp_as_default = true,
+			},
 
-                ['<Up>'] = { 'select_prev', 'fallback' },
-                ['<Down>'] = { 'select_next', 'fallback' },
-                ['<C-p>'] = { 'select_prev', 'fallback' },
-                ['<C-n>'] = { 'select_next', 'fallback' },
+			completion = {
+				menu = {
+					auto_show = true,
+					border = "rounded",
+					draw = {
+						columns = {
+							{ "label", "label_description", gap = 1 },
+							{ "kind_icon", "kind", gap = 1 },
+						},
+					},
+				},
 
-                ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-                ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 0,
+					window = { -- Add this for hover/doc windows
+						border = "single", -- Border style
+						max_width = 80,
+						max_height = 20,
+					},
+				},
 
-                ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
-            },
+				trigger = {
+					show_on_trigger_character = true,
+					show_on_blocked_trigger_characters = { " ", "\n", "\t" },
+				},
+			},
 
-            appearance = {
-                use_nvim_cmp_as_default = true,
-                nerd_font_variant = "mono",
-            },
+			signature = {
+				enabled = true,
+				window = {
+					show_documentation = true,
+					border = "single",
+				},
+			},
 
-            completion = {
-                trigger = {
-                    show_on_trigger_character = true,
-                    show_on_insert_on_trigger_character = true,
-                    show_on_accept_on_trigger_character = true,
-                },
+			fuzzy = { implementation = "prefer_rust" },
+		},
+	},
+	{
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		opts = {
+			ensure_installed = {
+				"lua_ls",
+				"intelephense",
+				"html",
+				"cssls",
+				"eslint",
+				"tailwindcss",
+				"gopls",
+				"ruby_lsp",
+				"sorbet",
+			},
+			handlers = {}, -- Disable auto-setup to use new API
+		},
+	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"saghen/blink.cmp",
+		},
 
-                list = {
-                    max_items = 200,
+		config = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-                    selection = {
-                        auto_insert = false,
-                    },
-                },
+			require("lspconfig")
 
-                accept = {
-                    dot_repeat = true,
-                    create_undo_point = true,
-                    resolve_timeout_ms = 100,
-                    auto_brackets = {
-                        enabled = true,
-                        default_brackets = { "(", ")" },
-                        override_brackets_for_filetypes = {},
-                        kind_resolution = {
-                            enabled = true,
-                            blocked_filetypes = { "typescriptreact", "javascriptreact", "vue" },
-                        },
-                    },
-                },
+			local servers = {
+				"lua_ls",
+				"intelephense",
+				"html",
+				"cssls",
+				"eslint",
+				"tailwindcss",
+				"gopls",
+				"ruby_lsp",
+				"sorbet",
+			}
 
-                documentation = {
-                    auto_show = true,
-                },
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+			})
 
-                menu = {
-                    enabled = true,
-                    min_width = 30,
-                    max_height = 20,
-                    draw = {
-                        columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
-                    },
-                },
-            },
+			for _, server in ipairs(servers) do
+				vim.lsp.config(server, {})
+			end
 
-            sources = {
-                default = { "lsp", "path", "snippets", "buffer" },
-            },
+			vim.lsp.enable(servers)
 
-            signature = {
-                enabled = true,
-                window = {
-                    show_documentation = true,
-                },
-            },
-        },
-    },
+			vim.api.nvim_create_autocmd("LspAttach", {
+				callback = function(args)
+					local bufnr = args.buf
+					vim.keymap.set("n", "df", vim.lsp.buf.hover, { buffer = bufnr, desc = "LSP: Hover" })
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP: Definition" })
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "LSP: References" })
+					vim.keymap.set(
+						{ "n", "v" },
+						"<leader>ca",
+						vim.lsp.buf.code_action,
+						{ buffer = bufnr, desc = "LSP: Code action" }
+					)
+				end,
+			})
+
+			vim.cmd([[
+                autocmd BufEnter *.lua :setlocal tabstop=2 shiftwidth=2 expandtab
+                autocmd BufEnter *.js :setlocal tabstop=2 shiftwidth=2 expandtab
+                autocmd BufEnter *.jsx :setlocal tabstop=2 shiftwidth=2 expandtab
+                autocmd BufEnter *.ts :setlocal tabstop=2 shiftwidth=2 expandtab
+                autocmd BufEnter *.tsx :setlocal tabstop=2 shiftwidth=2 expandtab
+                autocmd BufEnter *.blade.php :setlocal tabstop=4 shiftwidth=4 expandtab
+            ]])
+		end,
+	},
 }
