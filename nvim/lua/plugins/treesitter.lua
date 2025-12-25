@@ -46,14 +46,17 @@ return {
 	-- 		vim.cmd([[colorscheme tokyonight-moon]])
 	-- 	end,
 	-- },
+	-- {
+	-- 	"blazkowolf/gruber-darker.nvim",
+	-- 	opts = {
+	-- 		bold = false,
+	-- 		italic = {
+	-- 			strings = false,
+	-- 		},
+	-- 	},
+	-- },
 	{
-		"blazkowolf/gruber-darker.nvim",
-		opts = {
-			bold = false,
-			italic = {
-				strings = false,
-			},
-		},
+		"rebelot/kanagawa.nvim",
 	},
 	{
 		"windwp/nvim-ts-autotag",
